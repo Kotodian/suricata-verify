@@ -1,0 +1,138 @@
+# *** Add configuration here ***
+requires:
+  min-version: 8
+
+args:
+- -k none
+
+checks:
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 17
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "ping"
+      mysql.affected_rows: 0
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 19
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "CREATE TEMPORARY TABLE payment (\n            customer_id int not null,\n            amount int not null,\n            account_name text\n        )"
+      mysql.affected_rows: 0
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 23
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "INSERT INTO payment (customer_id, amount, account_name)\n          VALUES (1, 2, NULL)"
+      mysql.affected_rows: 1
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 25
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "INSERT INTO payment (customer_id, amount, account_name)\n          VALUES (3, 4, foo)"
+      mysql.affected_rows: 1
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 27
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "INSERT INTO payment (customer_id, amount, account_name)\n          VALUES (5, 6, NULL)"
+      mysql.affected_rows: 1
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 29
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "INSERT INTO payment (customer_id, amount, account_name)\n          VALUES (7, 8, NULL)"
+      mysql.affected_rows: 1
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 31
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "INSERT INTO payment (customer_id, amount, account_name)\n          VALUES (9, 10, bar)"
+      mysql.affected_rows: 1
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 38
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "SELECT @@max_allowed_packet"
+      mysql.rows[0]: "67108864"
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 38
+      src_ip: 172.17.0.1
+      src_port: 55774
+      dest_ip: 172.17.0.3
+      dest_port: 3306
+      proto: TCP
+      event_type: mysql
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "SELECT customer_id, amount, account_name from payment"
+      mysql.rows[0]: "1,2,"
+      mysql.rows[1]: "3,4,foo"
+      mysql.rows[2]: "5,6,"
+      mysql.rows[3]: "7,8,"
+      mysql.rows[4]: "9,10,bar"
