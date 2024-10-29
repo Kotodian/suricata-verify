@@ -1,0 +1,55 @@
+# *** Add configuration here ***
+requires:
+  min-version: 8
+
+args:
+- -k none
+
+checks:
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 19
+      event_type: mysql
+      src_ip: 172.18.0.1
+      src_port: 38104
+      dest_ip: 172.18.0.3
+      dest_port: 3306
+      proto: TCP
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: select $$
+
+- filter:
+    count: 2
+    match:
+      pcap_cnt: 26
+      event_type: mysql
+      src_ip: 172.18.0.1
+      src_port: 38104
+      dest_ip: 172.18.0.3
+      dest_port: 3306
+      proto: TCP
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: "show databases"
+      mysql.rows[0]: "information_schema"
+      mysql.rows[1]: "mysql"
+      mysql.rows[2]: "performance_schema"
+      mysql.rows[3]: "sentinel-flow"
+      mysql.rows[4]: "sys"
+
+- filter:
+    count: 1
+    match:
+      pcap_cnt: 26
+      event_type: mysql
+      src_ip: 172.18.0.1
+      src_port: 38104
+      dest_ip: 172.18.0.3
+      dest_port: 3306
+      proto: TCP
+      mysql.version: 9.0.1
+      mysql.tls: false
+      mysql.command: quit
+
